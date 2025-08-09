@@ -1,5 +1,6 @@
 # Koch-Kompass
 Entdecke täglich neue Rezepte, plane deine Mahlzeiten clever und erstelle blitzschnell deine persönliche Einkaufsliste – alles an einem Ort. So macht Kochen und Einkaufen Spaß und geht super einfach!
+import { useState, useEffect } from "react";
 
 const recipes = [
   {
@@ -32,453 +33,94 @@ const recipes = [
     ]
   },
   {
-    name: "Caesar Salad",
-    description: "Frischer Salat mit Caesar-Dressing, Croutons und Parmesan.",
+    name: "Vegetarisches Chili",
+    description: "Würziges Chili mit Bohnen, Mais und Gemüse.",
     ingredients: [
-      "1 Kopf Römersalat, gewaschen",
-      "50 g Croutons",
-      "30 g Parmesan, gehobelt",
-      "3 EL Caesar-Dressing",
-      "1 Hähnchenbrustfilet, gegrillt und in Scheiben",
-      "Salz und Pfeffer"
+      "1 Dose Kidneybohnen (ca. 400 g), abgetropft",
+      "1 Dose Mais (ca. 300 g), abgetropft",
+      "1 Zwiebel, gehackt",
+      "2 Knoblauchzehen, gepresst",
+      "1 Dose gehackte Tomaten (400 g)",
+      "150 g Reis",
+      "2 EL Öl",
+      "Salz, Pfeffer, Chili"
+    ]
+  },
+  {
+    name: "Caesar Salad",
+    description: "Frischer Salat mit Hähnchen, Croutons und Caesar-Dressing.",
+    ingredients: [
+      "1 Kopf Römersalat",
+      "200 g gegrillte Hähnchenbrust, in Streifen",
+      "50 g Parmesan, gehobelt",
+      "100 g Croutons",
+      "4 EL Caesar-Dressing"
     ]
   },
   {
     name: "Pancakes",
-    description: "Fluffige Pfannkuchen, perfekt zum Frühstück.",
+    description: "Fluffige Frühstücks-Pancakes mit Ahornsirup.",
     ingredients: [
-      "150 g Mehl",
-      "2 EL Zucker",
+      "200 g Mehl",
+      "300 ml Milch",
+      "2 Eier",
+      "1 EL Zucker",
       "1 TL Backpulver",
-      "1 Prise Salz",
-      "200 ml Milch",
-      "1 Ei",
-      "2 EL geschmolzene Butter",
-      "Butter oder Öl zum Braten",
-      "Ahornsirup oder Früchte zum Servieren"
-    ]
-  },
-  {
-    name: "Gemüsepfanne mit Tofu",
-    description: "Bunte Pfanne mit knackigem Gemüse und proteinreichem Tofu.",
-    ingredients: [
-      "200 g Tofu, gewürfelt",
-      "1 rote Paprika, in Streifen",
-      "1 Zucchini, in Scheiben",
-      "100 g Brokkoli-Röschen",
-      "2 EL Sojasoße",
-      "1 EL Sesamöl",
-      "1 Knoblauchzehe, gepresst",
-      "Frischer Ingwer (ca. 1 cm), fein gerieben"
+      "Butter zum Braten",
+      "Ahornsirup zum Servieren"
     ]
   },
   {
     name: "Tomatensuppe",
-    description: "Würzige Suppe aus frischen Tomaten und Kräutern.",
+    description: "Cremige Suppe aus frischen Tomaten und Basilikum.",
     ingredients: [
-      "500 g reife Tomaten, gehackt",
-      "1 Zwiebel, gehackt",
-      "1 Knoblauchzehe",
+      "1 kg reife Tomaten",
+      "1 Zwiebel",
+      "2 Knoblauchzehen",
       "500 ml Gemüsebrühe",
       "2 EL Olivenöl",
-      "Salz und Pfeffer",
-      "Frisches Basilikum zum Garnieren"
+      "Salz, Pfeffer",
+      "Frisches Basilikum"
     ]
   },
   {
-    name: "Rührei mit Kräutern",
-    description: "Leichtes Frühstück mit frischen Kräutern.",
+    name: "Lasagne",
+    description: "Schichtweise gebackene Nudelauflauf mit Fleisch und Käse.",
     ingredients: [
-      "3 Eier",
-      "50 ml Milch",
-      "Salz und Pfeffer",
-      "1 EL Butter",
-      "Frische Petersilie und Schnittlauch, gehackt"
-    ]
-  },
-  {
-    name: "Ofenkartoffeln mit Kräuterquark",
-    description: "Knusprige Kartoffeln aus dem Ofen mit frischem Quark.",
-    ingredients: [
-      "4 große Kartoffeln",
-      "2 EL Olivenöl",
-      "Salz und Paprikapulver",
-      "250 g Quark",
-      "Frische Kräuter (Schnittlauch, Petersilie), gehackt",
-      "1 Knoblauchzehe, gepresst"
-    ]
-  },
-  {
-    name: "Vegetarische Lasagne",
-    description: "Schichtweise Lasagne mit Gemüse und Käse.",
-    ingredients: [
-      "9 Lasagneblätter",
-      "400 g passierte Tomaten",
-      "1 Zucchini, gewürfelt",
-      "1 Aubergine, gewürfelt",
-      "1 rote Paprika, gewürfelt",
-      "200 g Mozzarella, gerieben",
-      "50 g Parmesan, gerieben",
-      "2 EL Olivenöl",
-      "Salz, Pfeffer, italienische Kräuter"
-    ]
-  },
-  {
-    name: "Quinoa-Salat mit Feta",
-    description: "Frischer Salat mit Quinoa, Gemüse und Feta-Käse.",
-    ingredients: [
-      "150 g Quinoa",
-      "200 ml Gemüsebrühe",
-      "1 Gurke, gewürfelt",
-      "150 g Kirschtomaten, halbiert",
-      "100 g Feta, gewürfelt",
-      "2 EL Olivenöl",
-      "Saft einer Zitrone",
-      "Salz und Pfeffer"
-    ]
-  },
-  {
-    name: "Chili con Carne",
-    description: "Würziges Gericht mit Hackfleisch, Bohnen und Mais.",
-    ingredients: [
-      "300 g Rinderhackfleisch",
-      "1 Dose Kidneybohnen (ca. 400 g), abgetropft",
-      "1 Dose Mais (ca. 300 g), abgetropft",
-      "1 Zwiebel, gehackt",
-      "2 Knoblauchzehen, gepresst",
-      "1 Dose gehackte Tomaten (400 g)",
-      "2 EL Tomatenmark",
-      "1 TL Paprikapulver",
-      "1 TL Kreuzkümmel",
-      "2 EL Öl",
-      "Salz und Pfeffer"
-    ]
-  },
-  {
-    name: "Linsensuppe",
-    description: "Herzhafte Suppe mit roten Linsen und Gemüse.",
-    ingredients: [
-      "200 g rote Linsen",
-      "1 Karotte, gewürfelt",
-      "1 Stange Sellerie, gewürfelt",
-      "1 Zwiebel, gehackt",
-      "1 Knoblauchzehe, gepresst",
-      "1 Liter Gemüsebrühe",
-      "2 EL Olivenöl",
-      "Salz, Pfeffer, Lorbeerblatt"
-    ]
-  },
-  {
-    name: "Fischfilet mit Kartoffelsalat",
-    description: "Knuspriges Fischfilet mit cremigem Kartoffelsalat.",
-    ingredients: [
-      "2 Fischfilets (z.B. Seelachs, je ca. 150 g)",
-      "400 g Kartoffeln",
-      "1 kleine Zwiebel, fein gehackt",
-      "2 EL Mayonnaise",
-      "1 EL Senf",
-      "2 EL Essig",
-      "Salz und Pfeffer",
-      "Petersilie zum Garnieren"
-    ]
-  },
-  {
-    name: "Ratatouille",
-    description: "Französisches Gemüsegericht aus Zucchini, Auberginen und Tomaten.",
-    ingredients: [
-      "1 Zucchini, gewürfelt",
-      "1 Aubergine, gewürfelt",
-      "2 Tomaten, gewürfelt",
-      "1 rote Paprika, gewürfelt",
-      "1 Zwiebel, gehackt",
-      "2 Knoblauchzehen, gepresst",
-      "3 EL Olivenöl",
-      "Salz, Pfeffer, Kräuter der Provence"
-    ]
-  },
-  {
-    name: "Gebratener Reis mit Gemüse",
-    description: "Leckeres Pfannengericht mit Reis und buntem Gemüse.",
-    ingredients: [
-      "200 g gekochter Reis",
-      "1 Karotte, gewürfelt",
-      "100 g Erbsen",
-      "1 Frühlingszwiebel, gehackt",
-      "2 Eier",
-      "2 EL Sojasoße",
-      "2 EL Öl",
-      "Salz und Pfeffer"
-    ]
-  },
-  {
-    name: "Hähnchenbrust mit Ofengemüse",
-    description: "Saftige Hähnchenbrust mit bunt gemischtem Gemüse aus dem Ofen.",
-    ingredients: [
-      "2 Hähnchenbrustfilets (je ca. 150 g)",
-      "200 g Karotten, in Stifte geschnitten",
-      "150 g Zucchini, in Scheiben",
-      "1 Paprika, gewürfelt",
-      "2 EL Olivenöl",
-      "Salz, Pfeffer, Paprikapulver"
-    ]
-  },
-  {
-    name: "Gulasch",
-    description: "Deftiges Rindergulasch mit Paprika und Zwiebeln.",
-    ingredients: [
-      "400 g Rindfleisch, gewürfelt",
-      "2 Zwiebeln, grob gehackt",
-      "2 Paprika, gewürfelt",
-      "2 EL Tomatenmark",
-      "500 ml Rinderbrühe",
-      "2 EL Öl",
-      "Salz, Pfeffer, Paprikapulver"
-    ]
-  },
-  {
-    name: "Veggie-Burger",
-    description: "Leckere vegetarische Burger-Patties mit frischem Gemüse.",
-    ingredients: [
-      "1 Dose Kichererbsen (ca. 400 g), abgetropft",
-      "1 kleine Zwiebel, gehackt",
-      "1 Knoblauchzehe, gepresst",
-      "50 g Haferflocken",
-      "1 Ei",
-      "1 TL Kreuzkümmel",
-      "Salz und Pfeffer",
-      "Burger-Brötchen, Salat, Tomaten, Gurken"
-    ]
-  },
-  {
-    name: "Spinatlasagne",
-    description: "Cremige Lasagne mit Spinat und Ricotta.",
-    ingredients: [
-      "9 Lasagneblätter",
-      "300 g Blattspinat (frisch oder TK)",
-      "250 g Ricotta",
-      "200 ml Bechamelsauce",
-      "150 g geriebener Mozzarella",
-      "2 Knoblauchzehen, gepresst",
-      "Salz, Pfeffer, Muskatnuss"
-    ]
-  },
-  {
-    name: "Tomaten-Mozzarella-Salat",
-    description: "Einfacher Salat mit frischen Tomaten, Mozzarella und Basilikum.",
-    ingredients: [
-      "3 große Tomaten, in Scheiben",
-      "150 g Mozzarella, in Scheiben",
-      "Frische Basilikumblätter",
-      "2 EL Olivenöl",
-      "1 EL Balsamico-Essig",
-      "Salz und Pfeffer"
-    ]
-  },
-  {
-    name: "Chili sin Carne",
-    description: "Vegetarisches Chili mit Bohnen und Gemüse.",
-    ingredients: [
-      "1 Dose Kidneybohnen (ca. 400 g), abgetropft",
-      "1 Dose Mais (ca. 300 g), abgetropft",
-      "1 Zwiebel, gehackt",
-      "2 Knoblauchzehen, gepresst",
-      "1 Dose gehackte Tomaten (400 g)",
-      "2 EL Tomatenmark",
-      "1 TL Paprikapulver",
-      "1 TL Kreuzkümmel",
-      "2 EL Öl",
-      "Salz und Pfeffer"
-    ]
-  },
-  {
-    name: "Omelett mit Gemüse",
-    description: "Fluffiges Omelett mit buntem Gemüse.",
-    ingredients: [
-      "3 Eier",
-      "50 ml Milch",
-      "1 kleine Paprika, gewürfelt",
-      "1 Tomate, gewürfelt",
-      "1 Frühlingszwiebel, gehackt",
-      "Salz und Pfeffer",
-      "1 EL Butter"
-    ]
-  },
-  {
-    name: "Pasta Alfredo",
-    description: "Cremige Pasta mit Parmesan und Sahnesoße.",
-    ingredients: [
-      "200 g Pasta (z.B. Fettuccine)",
-      "150 ml Sahne",
-      "50 g Parmesan, gerieben",
-      "2 EL Butter",
-      "1 Knoblauchzehe, gepresst",
-      "Salz und Pfeffer"
-    ]
-  },
-  {
-    name: "Gemüsesuppe",
-    description: "Wärmende Suppe mit saisonalem Gemüse.",
-    ingredients: [
-      "2 Karotten, gewürfelt",
-      "1 Stange Sellerie, gewürfelt",
-      "1 Lauchstange, in Ringe",
-      "1 Kartoffel, gewürfelt",
-      "1 Zwiebel, gehackt",
-      "1 Liter Gemüsebrühe",
-      "2 EL Olivenöl",
-      "Salz und Pfeffer"
-    ]
-  },
-  {
-    name: "Beef Stroganoff",
-    description: "Rindergeschnetzeltes in cremiger Pilzsoße.",
-    ingredients: [
-      "300 g Rindfleisch, in Streifen",
-      "150 g Champignons, geschnitten",
-      "1 Zwiebel, gehackt",
-      "150 ml saure Sahne",
-      "2 EL Öl",
-      "Salz, Pfeffer, Paprikapulver"
-    ]
-  },
-  {
-    name: "Falafel mit Tahini-Sauce",
-    description: "Knusprige Kichererbsenbällchen mit Sesamsoße.",
-    ingredients: [
-      "250 g Kichererbsen (über Nacht eingeweicht)",
-      "1 Zwiebel, gehackt",
+      "12 Lasagneblätter",
+      "400 g Hackfleisch",
+      "1 Zwiebel",
       "2 Knoblauchzehen",
-      "1 Bund Petersilie",
-      "1 TL Kreuzkümmel",
-      "Salz und Pfeffer",
-      "Öl zum Frittieren",
-      "Tahini, Zitronensaft, Wasser für die Sauce"
-    ]
-  },
-  {
-    name: "Hähnchen-Pfanne mit Paprika",
-    description: "Schnelle Pfanne mit Hähnchen und buntem Paprika.",
-    ingredients: [
-      "300 g Hähnchenbrust, gewürfelt",
-      "2 Paprika (rot und gelb), in Streifen",
-      "1 Zwiebel, gehackt",
-      "2 EL Olivenöl",
-      "Salz, Pfeffer, Paprikapulver"
-    ]
-  },
-  {
-    name: "Minestrone",
-    description: "Italienische Gemüsesuppe mit Nudeln und Bohnen.",
-    ingredients: [
-      "1 Zucchini, gewürfelt",
-      "2 Karotten, gewürfelt",
-      "1 Dose weiße Bohnen (ca. 400 g), abgetropft",
-      "100 g kleine Pasta",
-      "1 Zwiebel, gehackt",
-      "1 Liter Gemüsebrühe",
+      "500 ml passierte Tomaten",
+      "250 g Ricotta",
+      "200 g geriebener Mozzarella",
       "2 EL Olivenöl",
       "Salz, Pfeffer, italienische Kräuter"
     ]
   },
   {
-    name: "Kaiserschmarrn",
-    description: "Fluffiger österreichischer Pfannkuchen mit Rosinen.",
-    ingredients: [
-      "3 Eier",
-      "200 ml Milch",
-      "150 g Mehl",
-      "1 EL Zucker",
-      "1 Prise Salz",
-      "50 g Rosinen",
-      "Butter zum Braten",
-      "Puderzucker zum Bestreuen",
-      "Apfelmus oder Zwetschgenröster zum Servieren"
-    ]
-  },
-  {
-    name: "Zucchini-Nudeln mit Pesto",
-    description: "Leichtes Gericht mit Zucchini als Nudeln und frischem Pesto.",
-    ingredients: [
-      "2 große Zucchini",
-      "4 EL Pesto (Basilikum oder Rucola)",
-      "20 g Parmesan, gerieben",
-      "1 EL Olivenöl",
-      "Salz und Pfeffer"
-    ]
-  },
-  {
-    name: "Gemüse-Curry",
-    description: "Cremiges Curry mit buntem Gemüse und Kokosmilch.",
-    ingredients: [
-      "1 Brokkoli, in Röschen",
-      "1 rote Paprika, gewürfelt",
-      "1 Karotte, in Scheiben",
-      "200 ml Kokosmilch",
-      "2 EL Currypaste",
-      "1 Zwiebel, gehackt",
-      "2 EL Öl",
-      "Salz und Pfeffer"
-    ]
-  },
-  {
-    name: "Ratatouille-Quiche",
-    description: "Herzhafte Quiche mit Ratatouille-Gemüsefüllung.",
+    name: "Quiche Lorraine",
+    description: "Herzhafte Quiche mit Speck und Käse.",
     ingredients: [
       "1 Mürbeteigboden",
-      "200 g Ratatouille-Gemüse (Zucchini, Aubergine, Paprika)",
+      "150 g Speckwürfel",
       "3 Eier",
-      "150 ml Sahne",
-      "100 g geriebener Käse",
-      "Salz, Pfeffer, Kräuter"
-    ]
-  },
-  {
-    name: "Kartoffelgratin",
-    description: "Überbackene Kartoffeln mit Sahne und Käse.",
-    ingredients: [
-      "800 g Kartoffeln, in dünne Scheiben",
       "200 ml Sahne",
       "150 g geriebener Käse",
-      "2 Knoblauchzehen, gepresst",
       "Salz, Pfeffer, Muskatnuss"
     ]
   },
   {
-    name: "Nudelsalat",
-    description: "Kalter Salat mit Nudeln, Gemüse und Dressing.",
+    name: "Gemüsepfanne",
+    description: "Bunte Pfanne mit frischem Gemüse und Sojasoße.",
     ingredients: [
-      "250 g kurze Nudeln (z.B. Fusilli)",
-      "1 rote Paprika, gewürfelt",
-      "1 Gurke, gewürfelt",
-      "100 g Mais",
-      "3 EL Mayonnaise",
-      "2 EL Joghurt",
+      "1 Brokkoli",
+      "1 Paprika",
+      "2 Karotten",
+      "100 g Champignons",
+      "2 EL Sojasoße",
+      "1 EL Sesamöl",
       "Salz und Pfeffer"
-    ]
-  },
-  {
-    name: "Rote Bete Salat",
-    description: "Frischer Salat mit Roter Bete und Ziegenkäse.",
-    ingredients: [
-      "300 g Rote Bete (vorgekocht), gewürfelt",
-      "100 g Ziegenkäse",
-      "1 Apfel, gewürfelt",
-      "2 EL Walnüsse, gehackt",
-      "3 EL Olivenöl",
-      "1 EL Balsamico-Essig",
-      "Salz und Pfeffer"
-    ]
-  },
-  {
-    name: "Gnocchi mit Tomatensoße",
-    description: "Weiche Kartoffelgnocchi in fruchtiger Tomatensoße.",
-    ingredients: [
-      "400 g Gnocchi",
-      "400 ml passierte Tomaten",
-      "1 Zwiebel, gehackt",
-      "2 Knoblauchzehen, gepresst",
-      "2 EL Olivenöl",
-      "Basilikum, Salz und Pfeffer"
     ]
   },
   {
@@ -723,18 +365,6 @@ const recipes = [
     ]
   },
   {
-    name: "Quiche Lorraine",
-    description: "Herzhafte Quiche mit Speck und Käse.",
-    ingredients: [
-      "1 Mürbeteigboden",
-      "150 g Speckwürfel",
-      "3 Eier",
-      "200 ml Sahne",
-      "150 g geriebener Käse",
-      "Salz, Pfeffer, Muskatnuss"
-    ]
-  },
-  {
     name: "Frühlingsrollen",
     description: "Knusprige Rollen mit Gemüsefüllung.",
     ingredients: [
@@ -878,93 +508,60 @@ const recipes = [
     description: "Warmer Haferbrei mit frischem Obst.",
     ingredients: [
       "50 g Haferflocken",
-      "250 ml Milch oder Pflanzendrink",
-      "1 TL Honig",
-      "Frische Beeren oder Bananenscheiben"
+      "300 ml Milch oder Pflanzendrink",
+      "1 EL Honig",
+      "Frische Beeren oder Banane"
     ]
   },
   {
-    name: "Frikadellen",
-    description: "Deftige Fleischklöße mit Zwiebeln.",
+    name: "Fischfilet mit Gemüse",
+    description: "Gedünstetes Fischfilet mit buntem Gemüse.",
     ingredients: [
-      "400 g gemischtes Hackfleisch",
-      "1 kleine Zwiebel, fein gehackt",
-      "1 Ei",
-      "2 EL Semmelbrösel",
-      "Salz, Pfeffer, Muskat"
-    ]
-  },
-  {
-    name: "Tomatenreis",
-    description: "Reis mit fruchtigen Tomaten und Gewürzen.",
-    ingredients: [
-      "200 g Reis",
-      "1 Dose gehackte Tomaten (400 g)",
-      "1 Zwiebel, gehackt",
-      "1 Knoblauchzehe, gepresst",
+      "2 Fischfilets (z.B. Kabeljau)",
+      "1 Zucchini, gewürfelt",
+      "1 Karotte, gewürfelt",
+      "1 Paprika, gewürfelt",
       "2 EL Olivenöl",
-      "Salz, Pfeffer, Paprikapulver"
+      "Salz, Pfeffer, Zitronensaft"
     ]
   },
   {
-    name: "Hähnchen-Caesar-Wrap",
-    description: "Wrap gefüllt mit Hähnchen, Salat und Caesar-Dressing.",
+    name: "Ratatouille",
+    description: "Geschmortes Gemüse der Provence.",
     ingredients: [
-      "4 große Tortillas",
-      "300 g Hähnchenbrust, gegrillt und in Streifen",
-      "1 Kopf Römersalat",
-      "50 g Parmesan, gehobelt",
-      "4 EL Caesar-Dressing"
-    ]
-  },
-  {
-    name: "Linsen-Dal",
-    description: "Indisches Gericht mit roten Linsen und Gewürzen.",
-    ingredients: [
-      "200 g rote Linsen",
-      "1 Zwiebel, gehackt",
-      "2 Knoblauchzehen, gepresst",
-      "1 Stück Ingwer (2 cm), gerieben",
-      "400 ml Kokosmilch",
-      "1 EL Currypulver",
-      "2 EL Öl",
-      "Salz und Pfeffer"
-    ]
-  },
-  {
-    name: "Kartoffelpuffer",
-    description: "Knusprige Puffer aus geriebenen Kartoffeln.",
-    ingredients: [
-      "500 g Kartoffeln, gerieben",
-      "1 Ei",
-      "2 EL Mehl",
-      "Salz und Pfeffer",
-      "Öl zum Braten"
-    ]
-  },
-  {
-    name: "Sushi Bowl",
-    description: "Reis mit rohem Fisch, Gemüse und Sojasoße.",
-    ingredients: [
-      "150 g Sushi-Reis",
-      "200 g Lachsfilet, roh oder geräuchert",
-      "1 Avocado, in Scheiben",
-      "1 Gurke, in Streifen",
-      "Sojasoße",
-      "Sesam"
-    ]
-  },
-  {
-    name: "Frittata mit Gemüse",
-    description: "Italienisches Omelett mit Gemüse und Käse.",
-    ingredients: [
-      "6 Eier",
-      "100 ml Milch",
+      "1 Aubergine, gewürfelt",
       "1 Zucchini, gewürfelt",
       "1 Paprika, gewürfelt",
-      "100 g geriebener Käse",
-      "Salz und Pfeffer",
-      "2 EL Olivenöl"
+      "2 Tomaten, gewürfelt",
+      "1 Zwiebel, gehackt",
+      "2 Knoblauchzehen, gepresst",
+      "3 EL Olivenöl",
+      "Thymian, Salz, Pfeffer"
+    ]
+  },
+  {
+    name: "French Toast",
+    description: "Süße, in Ei getunkte Brotscheiben, gebraten.",
+    ingredients: [
+      "4 Scheiben Toastbrot",
+      "2 Eier",
+      "100 ml Milch",
+      "1 TL Zimt",
+      "Butter zum Braten",
+      "Ahornsirup oder Puderzucker"
+    ]
+  },
+  {
+    name: "Gulasch",
+    description: "Deftiger Eintopf mit Rindfleisch und Paprika.",
+    ingredients: [
+      "500 g Rindfleisch, gewürfelt",
+      "2 Zwiebeln, gehackt",
+      "2 Paprika, gewürfelt",
+      "2 EL Paprikapulver",
+      "500 ml Rinderbrühe",
+      "2 EL Öl",
+      "Salz, Pfeffer"
     ]
   },
   {
@@ -976,23 +573,291 @@ const recipes = [
       "1 Stange Sellerie, gewürfelt",
       "1 Zwiebel, gehackt",
       "1 Liter Gemüsebrühe",
+      "2 EL Tomatenmark",
+      "Salz, Pfeffer, Thymian"
+    ]
+  },
+  {
+    name: "Avocado Toast",
+    description: "Geröstetes Brot mit zerdrückter Avocado.",
+    ingredients: [
+      "2 Scheiben Vollkornbrot",
+      "1 reife Avocado",
+      "Salz, Pfeffer",
+      "Chiliflocken (optional)",
+      "Zitronensaft"
+    ]
+  },
+  {
+    name: "Shrimps-Pasta",
+    description: "Pasta mit Knoblauch-Shrimps und frischen Kräutern.",
+    ingredients: [
+      "200 g Spaghetti",
+      "200 g Shrimps",
+      "2 Knoblauchzehen, gehackt",
       "2 EL Olivenöl",
+      "1 Bund Petersilie, gehackt",
+      "Salz, Pfeffer",
+      "1 Zitrone"
+    ]
+  },
+  {
+    name: "Minestrone",
+    description: "Italienische Gemüsesuppe mit Pasta.",
+    ingredients: [
+      "1 Zwiebel, gehackt",
+      "2 Karotten, gewürfelt",
+      "2 Stangen Sellerie, gewürfelt",
+      "1 Zucchini, gewürfelt",
+      "1 Dose gehackte Tomaten",
+      "100 g kleine Pasta (z.B. Ditalini)",
+      "1 Liter Gemüsebrühe",
+      "Salz, Pfeffer, Basilikum"
+    ]
+  },
+  {
+    name: "Zimtschnecken",
+    description: "Süße Hefeschnecken mit Zimt und Zucker.",
+    ingredients: [
+      "500 g Mehl",
+      "250 ml Milch",
+      "75 g Zucker",
+      "75 g Butter",
+      "1 Würfel Hefe",
+      "2 EL Zimt",
+      "50 g Zucker (für Füllung)"
+    ]
+  },
+  {
+    name: "Falafel",
+    description: "Frittierte Bällchen aus Kichererbsen und Kräutern.",
+    ingredients: [
+      "250 g Kichererbsen (über Nacht eingeweicht)",
+      "1 Zwiebel",
+      "2 Knoblauchzehen",
+      "1 Bund Petersilie",
+      "1 TL Kreuzkümmel",
+      "Salz und Pfeffer",
+      "Öl zum Frittieren"
+    ]
+  },
+  {
+    name: "Grüner Smoothie",
+    description: "Frischer Smoothie mit Spinat, Banane und Apfel.",
+    ingredients: [
+      "1 Handvoll Spinat",
+      "1 Banane",
+      "1 Apfel",
+      "200 ml Wasser",
+      "1 EL Honig (optional)"
+    ]
+  },
+  {
+    name: "Kartoffelgratin",
+    description: "Überbackene Kartoffeln mit Sahne und Käse.",
+    ingredients: [
+      "800 g Kartoffeln, in dünne Scheiben",
+      "200 ml Sahne",
+      "150 g geriebener Käse",
+      "1 Knoblauchzehe",
+      "Salz, Pfeffer, Muskatnuss"
+    ]
+  },
+  {
+    name: "Bauernfrühstück",
+    description: "Bratkartoffeln mit Ei und Zwiebeln.",
+    ingredients: [
+      "400 g Kartoffeln, gekocht und gewürfelt",
+      "4 Eier",
+      "1 Zwiebel, gewürfelt",
+      "2 EL Öl",
       "Salz und Pfeffer"
     ]
   },
   {
-    name: "Pasta Pesto",
-    description: "Schnelle Pasta mit grünem Pesto.",
+    name: "Bruschetta",
+    description: "Geröstetes Brot mit Tomaten und Basilikum.",
     ingredients: [
-      "200 g Pasta",
-      "4 EL Pesto",
-      "30 g Parmesan, gerieben",
-      "2 EL Olivenöl"
+      "4 Scheiben Ciabatta",
+      "3 Tomaten, gewürfelt",
+      "2 Knoblauchzehen",
+      "3 EL Olivenöl",
+      "Basilikumblätter",
+      "Salz und Pfeffer"
     ]
   },
   {
-    name: "Bunte Gemüsepfanne",
-    description: "Gebratenes Gemüse mit Sojasoße und Sesam.",
+    name: "Quinoa-Salat",
+    description: "Gesunder Salat mit Quinoa und Gemüse.",
     ingredients: [
-      "1 Brokkoli, in Röschen",
-      "1 rote Paprika, gewürfelt
+      "150 g Quinoa",
+      "200 ml Gemüsebrühe",
+      "1 Paprika, gewürfelt",
+      "1 Gurke, gewürfelt",
+      "1 Bund Koriander, gehackt",
+      "3 EL Olivenöl",
+      "Saft einer Zitrone",
+      "Salz und Pfeffer"
+    ]
+  },
+  {
+    name: "Kichererbsen-Curry",
+    description: "Würziges Curry mit Kichererbsen und Kokosmilch.",
+    ingredients: [
+      "1 Dose Kichererbsen (ca. 400 g)",
+      "1 Zwiebel, gewürfelt",
+      "2 Knoblauchzehen, gepresst",
+      "2 EL Currypaste",
+      "200 ml Kokosmilch",
+      "2 EL Öl",
+      "Salz und Pfeffer"
+    ]
+  }
+];
+
+export default function Home() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredRecipes, setFilteredRecipes] = useState(recipes);
+  const [dailyRecipe, setDailyRecipe] = useState(null);
+
+  useEffect(() => {
+    // Tägliches Rezept vorschlagen
+    const index = Math.floor(Math.random() * recipes.length);
+    setDailyRecipe(recipes[index]);
+  }, []);
+
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setFilteredRecipes(recipes);
+    } else {
+      const lower = searchTerm.toLowerCase();
+      setFilteredRecipes(
+        recipes.filter(
+          r =>
+            r.name.toLowerCase().includes(lower) ||
+            r.ingredients.some(ing => ing.toLowerCase().includes(lower)) ||
+            r.description.toLowerCase().includes(lower)
+        )
+      );
+    }
+  }, [searchTerm]);
+
+  return (
+    <div style={styles.page}>
+      <header style={styles.header}>
+        <h1 style={{ color: "#fff" }}>Kochkompass 🍳</h1>
+        <input
+          style={styles.searchInput}
+          type="text"
+          placeholder="Suche Rezepte..."
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+          autoFocus
+        />
+      </header>
+
+      <main style={styles.main}>
+        {dailyRecipe && (
+          <section style={styles.dailyRecipe}>
+            <h2>Täglicher Vorschlag</h2>
+            <h3>{dailyRecipe.name}</h3>
+            <p>{dailyRecipe.description}</p>
+            <strong>Zutaten:</strong>
+            <ul>
+              {dailyRecipe.ingredients.map((ing, i) => (
+                <li key={i}>{ing}</li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <section style={styles.recipeList}>
+          <h2>Alle Rezepte ({filteredRecipes.length})</h2>
+          {filteredRecipes.length === 0 && (
+            <p>Keine Rezepte gefunden. Bitte Suchbegriff anpassen.</p>
+          )}
+          {filteredRecipes.map((recipe, i) => (
+            <article key={i} style={styles.recipeCard}>
+              <h3>{recipe.name}</h3>
+              <p>{recipe.description}</p>
+              <strong>Zutaten:</strong>
+              <ul>
+                {recipe.ingredients.map((ing, j) => (
+                  <li key={j}>{ing}</li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </section>
+      </main>
+
+      <footer style={styles.footer}>
+        <small>© 2025 Kochkompass</small>
+      </footer>
+    </div>
+  );
+}
+
+const styles = {
+  page: {
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    background:
+      "linear-gradient(135deg, #f6d365 0%, #fda085 50%, #f6d365 100%)",
+    minHeight: "100vh",
+    padding: "0",
+    margin: "0",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  header: {
+    backgroundColor: "#ff6f61",
+    width: "100%",
+    padding: "1rem 2rem",
+    boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexWrap: "wrap",
+  },
+  searchInput: {
+    fontSize: "1rem",
+    padding: "0.5rem 1rem",
+    borderRadius: "20px",
+    border: "none",
+    outline: "none",
+    width: "250px",
+    maxWidth: "100%",
+  },
+  main: {
+    maxWidth: "900px",
+    width: "100%",
+    padding: "1rem 2rem",
+    flex: "1",
+  },
+  dailyRecipe: {
+    backgroundColor: "#fff3f0",
+    padding: "1rem 1.5rem",
+    borderRadius: "12px",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+    marginBottom: "2rem",
+  },
+  recipeList: {
+    backgroundColor: "#fff",
+    borderRadius: "12px",
+    padding: "1rem 1.5rem",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+  },
+  recipeCard: {
+    borderBottom: "1px solid #eee",
+    padding: "0.75rem 0",
+  },
+  footer: {
+    width: "100%",
+    textAlign: "center",
+    padding: "1rem 0",
+    backgroundColor: "#ff6f61",
+    color: "#fff",
+    marginTop: "auto",
+  },
+};
